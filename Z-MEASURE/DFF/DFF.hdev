@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="23.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_update_off ()</l>
+<l>dev_close_window ()</l>
+<l>dev_get_window (WindowHandle)</l>
+<l>set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
+<l>dev_set_paint ('default')</l>
+<c>* Read the sequence of images</c>
+<l>disp_message (WindowHandle, 'Read a sequence of focus images ...', 'image', 20, 20, 'white', 'false')</l>
+<l>list_image_files ('F:/3D/DepthFromFocus/DepthFromFocus/Origin', 'default', [], Names)</l>
+<l>read_image (ImageArray, Names)</l>
+<l>channels_to_image (ImageArray, Image)</l>
+<l>stop ()</l>
+<l>for Index :=20 to 107 by 1</l>
+<l>    access_channel (Image, ImageDisp, Index)   </l>
+<l>    dev_display (ImageDisp) </l>
+<l>    wait_seconds (0.1)</l>
+<l>endfor</l>
+<c>* Compute the depth map and display results</c>
+<l>* dev_display (ImageDisp)</l>
+<l>* disp_message (WindowHandle, 'Compute the depth map', 'image', 20, 20, 'white', 'false')</l>
+<l>depth_from_focus (Image, Depth, Confidence, ['bandpass', 3, 3], 'next_maximum')</l>
+<l>scale_image_max (Depth, DepthScaleMax)</l>
+<l>select_grayvalues_from_channels (Image, Depth, Sharp)</l>
+<l>scale_image (Sharp, ImageScaled, 8, 0)</l>
+<l>compose2 (DepthScaleMax, ImageScaled, MultiChannelImage)</l>
+<l>dev_clear_window ()</l>
+<l>*dev_set_paint (['3d_plot', 'texture'])</l>
+<l>*dev_display (MultiChannelImage)</l>
+<l>*disp_message (WindowHandle, '3D reconstruction of IGBT', 'image', 20, 280, 'white', 'false')</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
